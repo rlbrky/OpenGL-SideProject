@@ -10,6 +10,7 @@
 
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
+#include "VertexArray.h"
 
 struct ShaderProgramSource
 {
@@ -131,15 +132,12 @@ int main(void)
             1, 3, 0
         };
 
-        unsigned int VAO;
-        GLCall(glGenVertexArrays(1, &VAO));
-        GLCall(glBindVertexArray(VAO));
-
+        VertexArray va;
         VertexBuffer vb(vertices, 4 * 3 * sizeof(float));
 
-        //The 0 index here specifies the VAO that we created. (Compatibility version of openGL creates one by default but CORE version doesn't.)
-        GLCall(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0)); //Links buffer with vao.
-        GLCall(glEnableVertexAttribArray(0));
+        VertexBufferLayout layout;
+        layout.Push<float>(3);
+        va.AddBuffer(vb, layout);
 
         IndexBuffer ib(indices, 6);
 
@@ -152,6 +150,7 @@ int main(void)
         ASSERT(location != -1);
         GLCall(glUniform4f(location, 0.4f, 0.2f, 0.7f, 1.0f));
 
+        va.Unbind();
         GLCall(glUseProgram(0));
         GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
         GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
@@ -167,7 +166,7 @@ int main(void)
             GLCall(glUseProgram(shader));
             GLCall(glUniform4f(location, r, 0.2f, 0.7f, 1.0f));
 
-            GLCall(glBindVertexArray(VAO));
+            va.Bind();
             ib.Bind();
 
             //glDrawArrays(GL_TRIANGLES, 0, 3);
