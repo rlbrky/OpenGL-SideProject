@@ -14,15 +14,15 @@ VertexArray::~VertexArray()
 
 void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& layout)
 {
-	Bind();
-	vb.Bind();
+	Bind(); //Create a VAO
+	vb.Bind(); //Bind a buffer to VAO
 	//LAYOUT FOR BUFFER
 	const auto& elements = layout.GetElements();
 	unsigned int offset = 0;
 	for (unsigned int i = 0; i < elements.size(); i++)
 	{
 		const auto& element = elements[i];
-		//The 0 index here specifies the VAO that we created. (Compatibility version of openGL creates one by default but CORE version doesn't.)
+		//The i index here specifies the VAO that we created. (Compatibility version of openGL creates ONE by default but CORE version doesn't.)
 		GLCall(glVertexAttribPointer(i, element.count, element.type, element.normalized, layout.GetStride(), (const void*)offset)); //Links buffer with vao.
 		GLCall(glEnableVertexAttribArray(i));
 		offset += element.count * VertexBufferElement::GetSizeOfType(element.type);
