@@ -2,6 +2,10 @@
 
 #include<GL/glew.h>
 
+#include "VertexArray.h"
+#include "IndexBuffer.h"
+#include "Shader.h"
+
 //Macros for error checking, first one puts a breakpoint to the location which an error occured.
 #define ASSERT(x) if (!(x)) __debugbreak();
 //This one calls our error checking functions for each function we write. 
@@ -14,3 +18,10 @@
 void GLClearError();
 
 bool GLLogCall(const char* function, const char* file, int line);
+
+class Renderer
+{
+public:
+    void Clear() const;
+    void Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const;
+};
