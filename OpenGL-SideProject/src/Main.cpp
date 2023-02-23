@@ -13,6 +13,7 @@
 #include "IndexBuffer.h"
 #include "VertexArray.h"
 #include "Shader.h"
+#include "Texture.h"
 
 int main(void)
 {
@@ -46,10 +47,10 @@ int main(void)
     { //This scope is to fix a bug that openGL generates when terminating the program.
         //Triangle points XYZ coordinates
         float vertices[] = {
-            0.5f, 0.5f, 0.0f,       //0
-            -0.5f, -0.5f, 0.0f,     //1
-            0.5f, -0.5f, 0.0f,       //2
-            -0.5f, 0.5f, 0.0f       //3
+            0.5f, 0.5f, 0.0f,       1.0f, 1.0f,      //0
+            -0.5f, -0.5f, 0.0f,    0.0f, 0.0f,      //1
+            0.5f, -0.5f, 0.0f,     1.0f, 0.0f,      //2
+            -0.5f, 0.5f, 0.0f,     0.0f, 1.0f       //3
         };
 
         unsigned int indices[] = {
@@ -57,11 +58,16 @@ int main(void)
             1, 3, 0
         };
 
+        //Blending for alpha pixels to get correct texture.
+        GLCall(glEnable(GL_BLEND));
+        GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+
         VertexArray va;
-        VertexBuffer vb(vertices, 4 * 3 * sizeof(float));
+        VertexBuffer vb(vertices, 4 * 5 * sizeof(float));
 
         VertexBufferLayout layout;
         layout.Push<float>(3);
+        layout.Push<float>(2);
         va.AddBuffer(vb, layout);
 
         IndexBuffer ib(indices, 6);
@@ -69,6 +75,10 @@ int main(void)
         Shader shader("res/shader/Shader.shader");
         shader.Bind();
         shader.SetUniform4f("u_Color", 0.4f, 0.2f, 0.7f, 1.0f);
+
+        Texture texture("res/textures/moyai.png");
+        texture.Bind();
+        shader.SetUniform1i("u_Texture", 0);
 
         va.Unbind();
         shader.Unbind();
