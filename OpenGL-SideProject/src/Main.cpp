@@ -15,6 +15,9 @@
 #include "Shader.h"
 #include "Texture.h"
 
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+
 int main(void)
 {
     GLFWwindow* window;
@@ -58,7 +61,7 @@ int main(void)
             1, 3, 0
         };
 
-        //Blending for alpha pixels to get correct texture.
+        //Blending for alpha pixels to get correct texture.(For transparency)
         GLCall(glEnable(GL_BLEND));
         GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
@@ -72,9 +75,13 @@ int main(void)
 
         IndexBuffer ib(indices, 6);
 
+        //4:3 aspect ratio
+        glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
+
         Shader shader("res/shader/Shader.shader");
         shader.Bind();
         shader.SetUniform4f("u_Color", 0.4f, 0.2f, 0.7f, 1.0f);
+        shader.SetUniformMat4f("u_MVP", proj);
 
         Texture texture("res/textures/moyai.png");
         texture.Bind();
