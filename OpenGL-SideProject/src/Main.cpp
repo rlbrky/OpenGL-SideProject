@@ -50,10 +50,10 @@ int main(void)
     { //This scope is to fix a bug that openGL generates when terminating the program.
         //Triangle points XYZ coordinates
         float vertices[] = {
-            0.5f, 0.5f, 0.0f,       1.0f, 1.0f,      //0
-            -0.5f, -0.5f, 0.0f,    0.0f, 0.0f,      //1
-            0.5f, -0.5f, 0.0f,     1.0f, 0.0f,      //2
-            -0.5f, 0.5f, 0.0f,     0.0f, 1.0f       //3
+            200.0f, 200.0f, 0.0f,       1.0f, 1.0f,      //0
+            100.0f, 100.0f, 0.0f,    0.0f, 0.0f,      //1
+            200.0f, 100.0f, 0.0f,     1.0f, 0.0f,      //2
+            100.0f, 200.0f, 0.0f,     0.0f, 1.0f       //3
         };
 
         unsigned int indices[] = {
@@ -76,12 +76,16 @@ int main(void)
         IndexBuffer ib(indices, 6);
 
         //4:3 aspect ratio
-        glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
+        glm::mat4 proj = glm::ortho(0.0f, 640.0f, 0.0f, 480.0f, -1.0f, 1.0f);
+        glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(100, 0, 0));
+        glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(200, 200, 0));
+
+        glm::mat4 mvp = proj * view * model;
 
         Shader shader("res/shader/Shader.shader");
         shader.Bind();
         shader.SetUniform4f("u_Color", 0.4f, 0.2f, 0.7f, 1.0f);
-        shader.SetUniformMat4f("u_MVP", proj);
+        shader.SetUniformMat4f("u_MVP", mvp);
 
         Texture texture("res/textures/moyai.png");
         texture.Bind();
