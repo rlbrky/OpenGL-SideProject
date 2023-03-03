@@ -17,7 +17,7 @@ private:
 	std::string m_FilePath;
 	unsigned int m_RendererID;
 	//Caching for uniforms
-	std::unordered_map<std::string, int> m_UniformLocationCache;
+	mutable std::unordered_map<std::string, int> m_UniformLocationCache;
 public:
 	Shader(const std::string& filenpath);
 	~Shader();
@@ -34,5 +34,6 @@ private:
 	unsigned int CreateShader(const std::string& vertexShader, const std::string& fragmentShader);
 	unsigned int CompileShader(unsigned int type, const std::string& source);
 
-	unsigned int GetUniformLocation(const std::string& name);
+	//Mutable variables can be changed with const functions, which we are using here.(Details on cpp file.)
+	unsigned int GetUniformLocation(const std::string& name) const;
 };

@@ -161,7 +161,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shader\Shader.shader" />
-    <None Include="src\tests\TestCreateObject.cpp" />
     <None Include="src\vendor\glm\detail\func_common.inl" />
     <None Include="src\vendor\glm\detail\func_common_simd.inl" />
     <None Include="src\vendor\glm\detail\func_exponential.inl" />
@@ -305,7 +304,6 @@
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\tests\Test.h" />
     <ClInclude Include="src\tests\TestClearColor.h" />
-    <ClInclude Include="src\tests\TestCreateObject.h" />
     <ClInclude Include="src\tests\TestTexture2D.h" />
     <ClInclude Include="src\vendor\glm\common.hpp" />
     <ClInclude Include="src\vendor\glm\detail\compute_common.hpp" />
