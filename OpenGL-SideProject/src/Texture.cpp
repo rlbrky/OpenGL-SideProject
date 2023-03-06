@@ -29,6 +29,7 @@ Texture::Texture(const std::string& filepath)
 
 	if (m_LocalBuffer)
 		stbi_image_free(m_LocalBuffer);
+	texID = m_RendererID;
 }
 
 Texture::~Texture()
@@ -46,4 +47,9 @@ void Texture::Bind(unsigned int slot /*= 0*/) const
 void Texture::Unbind() const
 {
 	GLCall(glBindTexture(GL_TEXTURE_2D, 0));
+}
+
+unsigned int Texture::GetTexID()
+{
+	return texID;
 }

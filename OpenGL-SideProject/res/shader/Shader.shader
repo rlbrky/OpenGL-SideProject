@@ -2,12 +2,12 @@
 #version 330 core
 
 layout(location = 0) in vec4 position;
-//layout(location = 1) in vec2 texCoords;
-layout(location = 1) in vec4 Color;
+layout(location = 1) in vec2 texCoords;
+layout(location = 2) in float texIndex;
 
 //output to fragment shader(v stands for varying)
-//out vec2 v_TexCoords;
-out vec4 v_Color;
+out vec2 v_TexCoords;
+out float v_TexIndex;
 
 //Model View Projection Matrix
 uniform mat4 u_MVP;
@@ -15,8 +15,8 @@ uniform mat4 u_MVP;
 void main()
 {
 	gl_Position = u_MVP * position;
-	//v_TexCoords = texCoords;
-	v_Color = Color;
+	v_TexCoords = texCoords;
+	v_TexIndex = texIndex;
 }
 
 
@@ -25,15 +25,16 @@ void main()
 
 layout(location = 0) out vec4 color;
 
-//in vec2 v_TexCoords;
-in vec4 v_Color;
+in vec2 v_TexCoords;
+in float v_TexIndex;
 
 uniform vec4 u_Color;
-uniform sampler2D u_Texture;
+uniform sampler2D u_Texture[2];
 
 void main()
 {
+	int index = int(v_TexIndex);
 	//vec4 texColor = texture(u_Texture, v_TexCoords);
-	//color = texColor;
-	color = v_Color;
+	vec4 texColor = texture(u_Texture[index], v_TexCoords);
+	color = texColor;
 }
