@@ -21,9 +21,9 @@ namespace test
 			-50.0f,  50.0f,		0.0f, 1.0f,		0.0f,
 
 			150.0f, 150.0f,			0.0f, 0.0f,		1.0f,
-			200.0f, 150.0f,			1.0f, 0.0f,		1.0f,
-			200.0f, 200.0f,			1.0f, 1.0f,		1.0f,
-			150.0f, 200.0f,			0.0f, 1.0f,		1.0f
+			250.0f, 150.0f,			1.0f, 0.0f,		1.0f,
+			250.0f, 250.0f,			1.0f, 1.0f,		1.0f,
+			150.0f, 250.0f,			0.0f, 1.0f,		1.0f
 		};
 
 		unsigned int indices[] = {
@@ -47,8 +47,13 @@ namespace test
 
 		m_Shader = std::make_unique<Shader>("res/shader/Shader.shader");
 		m_Shader->Bind();
-		m_Texture1 = std::make_unique<Texture>("res/textures/moyai.png");
-		m_Texture2 = std::make_unique<Texture>("res/textures/Clueless.png");
+		
+		//Can't load 2 textures without dynamic rendering.
+		// 
+		//m_Texture = std::make_unique<Texture>("res/textures/moyai.png");
+		m_Texture = std::make_unique<Texture>("res/textures/Clueless.png");
+
+		//m_Texture2 = Texture("res/textures/Clueless.png");
 		//m_Shader->SetUniform1i("u_Texture", 0);
 	}
 
@@ -68,8 +73,7 @@ namespace test
 		GLCall(glClear(GL_COLOR_BUFFER_BIT));
 
 		Renderer renderer;
-		GLCall(glBindTextureUnit(0, m_Texture1->GetTexID()));
-		GLCall(glBindTextureUnit(1, m_Texture2->GetTexID()));
+		m_Texture->Bind(0);
 
 		{
 			glm::mat4 model = glm::translate(glm::mat4(1.0f), m_TranslationA);

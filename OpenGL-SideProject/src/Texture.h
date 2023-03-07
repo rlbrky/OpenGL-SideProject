@@ -9,7 +9,6 @@ private:
 	std::string m_Filepath;
 	unsigned char* m_LocalBuffer;
 	int m_Width, m_Height, m_BPP;
-	unsigned int texID;
 public:
 	Texture(const std::string& filepath);
 	~Texture();
